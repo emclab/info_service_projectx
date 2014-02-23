@@ -1,0 +1,33 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
+<%= simple_form_for @project do |f| %>
+  <%= f.input :name, :label => t('Project Name') %>
+  <%= f.input :service_num, :label => t('Service#'), :readonly => true %>
+  <%= f.input :customer_name_autocomplete,:input_html => { data: {autocomplete_source: SUBURI + kustomerx.autocomplete_customers_path}},
+              :label => t('Customer'), :placeholder => t("Enter customer keyword"), :required => true unless @customer %>
+  <%= f.input :customer_name,:input_html => {:value => @customer.name}, :label => t('Customer'), :readonly => true if @customer %>
+  <%= f.input :customer_id, :input_html => {:value => @customer.id}, :as => :hidden if @customer %>
+  <%= f.input :develop_start_date, :label => t('Develop Start Date'), :as => :string %>
+  <%= f.input :develop_finish_date, :label => t('Develop Finish Date'), :as => :string %>
+  <%= f.input :initial_online_date, :label => t('Initial Online Date'), :as => :string %>
+  <%= f.input :fully_online_date, :label => t('Fully Online Date'), :as => :string %>
+  <%= f.input :project_desp, :label => t('Project Description'), :input_html => { :rows => 4} %>
+  <%= f.input :status_id, :label => t('Status'), :collection => Commonx::CommonxHelper.return_misc_definitions('project_status'), :label_method => :name, :value_method => :id,
+              :include_blank => true %>
+  <%=t('Project Members')%>:
+  <%= f.fields_for :project_members, @project.project_members.first do |builder| %>
+    <p>
+      <%= render :partial => 'first_project_member', :locals => {:f => builder} %>
+    </p>  
+  <% end %>  
+  <p><%= link_to_add_fields t("Add Project Member"), f, :project_members %></p>
+  
+  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>
+<% end %>
+
+<% end %>
+
+

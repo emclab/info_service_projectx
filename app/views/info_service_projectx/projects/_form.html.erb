@@ -1,0 +1,48 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
+<%= simple_form_for @project do |f| %>
+    <%= f.input :name, :label => t('Project Name'), :readonly => readonly?(@project, 'name') %>
+    <%= f.input :service_num, :label => t('Service#'), :readonly => readonly?(@project, 'service_num') %>
+    <%= f.input :customer_name_autocomplete,:input_html => { data: {autocomplete_source: SUBURI + kustomerx.autocomplete_customers_path}},
+                :label => t('Customer'), :placeholder => t("Enter customer keyword") unless readonly?(@project, 'customer_id') %>
+    <%= f.input :customer_name_,:input_html => {:value => @project.customer.name}, :label => t('Customer')if readonly?(@project, 'customer_id') %>
+    <%= f.input :develop_start_date, :label => t('Develop Start Date'), :as => :string, :readonly => readonly?(@project, 'develop_start_date') %>
+    <%= f.input :develop_finish_date, :label => t('Develop Finish Date'), :as => :string, :readonly => readonly?(@project, 'develop_finish_date') %>
+    <%= f.input :initial_online_date, :label => t('Initial Online Date'), :as => :string, :readonly => readonly?(@project, 'initial_online_date') %>
+    <%= f.input :fully_online_date, :label => t('Fully Online Date'), :as => :string, :readonly => readonly?(@project, 'fully_online_date') %>
+    <%= f.input :project_desp, :label => t('Project Description'), :input_html => { :rows => 4}, :readonly => readonly?(@project, 'project_desp') %>
+    <%= f.input :status_id, :label => t('Status'), :collection => Commonx::CommonxHelper.return_misc_definitions('project_status'), :label_method => :name, :value_method => :id,
+                :include_blank => true unless readonly?(@project, 'status_id') %>
+    <%= f.input :status_name, :label => t('Status'), :input_html => {:value => @project.status.name} if readonly?(@project, 'status_id') %>
+    <%=t('Project Members')%>:
+    <%= f.fields_for :project_members, @project.project_members.first do |builder| %>
+      <p>
+        <%= render :partial => 'first_project_member', :locals => {:f => builder} %>
+      </p>  
+    <% end %>
+    <%= f.fields_for :project_members, @project.project_members.offset(1) do |builder| %>
+      <p>
+        <%= render :partial => 'project_members', :locals => {:f => builder} %>
+      </p>  
+    <% end %>    
+    <p><%= link_to_add_fields t("Add Project Member"), f, :project_members %></p>
+    <%= f.input :decommissioned, :label => t('Decommissioned'), :as => :boolean unless readonly?(@project, 'decommissioned') %>
+    <%= f.input :decommissioned_noupdate, :label => t('Decommissioned'), :input_html => {:value => (@project.decommissioned ? t('Yes') : t('No'))} if readonly?(@project, 'decommissioned') %>
+    <%= f.input :decommission_reason, :label => t('Decommission Reason'), :input_html => { :rows => 4}, :readonly => readonly?(@project, 'decommission_reason') %>
+    <%= f.input :decommissioned_date, :label => t('Decommission Date'), :as => :string, :readonly => readonly?(@project, 'decommissioned_date') %>
+    <%= f.input :cancelled, :label => t('Cancelled'), :as => :boolean unless readonly?(@project, 'cancelled') %>
+    <%= f.input :cancelled_noupdate, :label => t('Cancelled'), :input_html => {:value => (@project.cancelled ? t('Yes') : t('No'))} if readonly?(@project, 'cancelled') %>
+    <%= f.input :cancell_reason, :label => t('Cancell Reason'), :input_html => { :rows => 4}, :readonly => readonly?(@project, 'cancell_reason') %>
+    <%= f.input :cancelled_date, :label => t('Cnacell Date'), :as => :string, :readonly => readonly?(@project, 'cancelled_date') %>
+    <%= f.input :last_updated_by_name, :label => t('Last Updated By'), :input_html => {:value => @project.last_updated_by.name}, :readonly => true %>
+     
+    <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+    <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>
+    
+<% end %>
+
+<% end %>
+
+
