@@ -18,6 +18,7 @@ gem 'onboard_data_uploadx', :path => '../onboard_data_uploadx'
 gem 'onboard_datax', :path => '../onboard_datax'
 gem 'state_machine_logx', :path => '../state_machine_logx'
 gem 'biz_workflowx', :path => '../biz_workflowx'
+gem 'sw_module_infox', :path => '../sw_module_infox'
 
 # Declare any dependencies that are still in development here instead of in
 # your gemspec. These might include edge Rails or gems from your path or

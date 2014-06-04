@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   mount OnboardDatax::Engine => '/onboard'
   mount OnboardDataUploadx::Engine => '/onboard_upload'
   mount ProjectMiscDefinitionx::Engine => '/misc_definition'
+  mount SwModuleInfox::Engine => '/engine'
   
   resource :session
   
