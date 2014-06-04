@@ -1,5 +1,5 @@
 <% if @view_in_config && @erb_code %>
-  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  <%= render inline: @erb_code %>
   
 <% else %>
 <%= simple_form_for @project do |f| %>
@@ -16,13 +16,6 @@
   <%= f.input :project_desp, :label => t('Project Description'), :input_html => { :rows => 4} %>
   <%= f.input :status_id, :label => t('Status'), :collection => Commonx::CommonxHelper.return_misc_definitions('project_status'), :label_method => :name, :value_method => :id,
               :include_blank => true %>
-  <%=t('Project Members')%>:
-  <%= f.fields_for :project_members, @project.project_members.first do |builder| %>
-    <p>
-      <%= render :partial => 'first_project_member', :locals => {:f => builder} %>
-    </p>  
-  <% end %>  
-  <p><%= link_to_add_fields t("Add Project Member"), f, :project_members %></p>
   
   <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
   <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>

@@ -6,13 +6,13 @@ module InfoServiceProjectx
     
     attr_accessible :cancelled, :customer_id, :decommissioned_date, :decommission_reason, :decommissioned,  :status_id, :cancelled_date, :cancell_reason,
                     :fully_online_date, :initial_online_date, :last_updated_by_id, :name, :project_desp, :develop_start_date, :develop_finish_date, 
-                    :project_members_attributes, :service_num, :customer_name,
+                    :service_num, :customer_name, :customer_name_autocomplete,
                     :as => :role_new
     
     attr_accessible :cancelled, :customer_id, :decommissioned_date, :decommission_reason, :decommissioned,  :cancelled_date, :cancell_reason,
                     :fully_online_date, :initial_online_date, :last_updated_by_id, :name, :project_desp, :develop_start_date, :develop_finish_date, :status_id, 
-                    :project_members_attributes, :service_num, 
-                    :cancelled_noupdate, :decommission_noupdate, :last_updated_by_name, :customer_name, :status_name,
+                    :service_num, 
+                    :cancelled_noupdate, :decommission_noupdate, :last_updated_by_name, :customer_name, :status_name, :customer_name_autocomplete,
                     :as => :role_update
                     
     attr_accessor :project_id_s, :keyword_s, :start_date_s, :fully_online_date_s, :customer_id_s, :status_s, :service_num_s,
@@ -27,8 +27,6 @@ module InfoServiceProjectx
     belongs_to :status, :class_name => 'Commonx::MiscDefinition'
     belongs_to :customer, :class_name => InfoServiceProjectx.customer_class.to_s
     belongs_to :last_updated_by, :class_name => 'Authentify::User'
-    has_many :project_members, :class_name => 'InfoServiceProjectx::ProjectMember'
-    accepts_nested_attributes_for :project_members, :allow_destroy => true
     
     validates :name, :presence => true,
                      :uniqueness => {:case_sensitive => false, :message => I18n.t('Duplicate Name!')}

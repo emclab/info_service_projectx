@@ -5,8 +5,6 @@ module InfoServiceProjectx
     before_filter :require_employee
     before_filter :load_parent_record
     
-    helper_method :return_project_member
-
     def index
       @title = t('Projects')
       @projects =  params[:info_service_projectx_projects][:model_ar_r]
@@ -18,8 +16,6 @@ module InfoServiceProjectx
     def new
       @title = t('New Project')
       @project = InfoServiceProjectx::Project.new
-      @skip_in_new = true
-      @project.project_members.build
       @erb_code = find_config_const('project_new_view', 'info_service_projectx')
     end
 
@@ -66,8 +62,5 @@ module InfoServiceProjectx
       @customer = InfoServiceProjectx.customer_class.find_by_id(InfoServiceProjectx::Project.find_by_id(params[:id])) if params[:id].present?
     end
     
-    def return_project_member(project)
-      project.project_members.where(active: true).map { |member| member.user.name }.join(',')
-    end
   end
 end

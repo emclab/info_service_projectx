@@ -41,31 +41,7 @@
     <b><%= t('Project Description') %></b>
     <%= @project.project_desp %>
 </p>
-<p>
-    <b><%= t('Project Memeber') %></b>
-    <table class="table table-striped">
-  <tr>
-    <th><%= t('User Name') %></th>
-    <th><%= t('Active') %></th>
-    <th><%= t('Created At') %></th>
-    <th><%= t('Project Role') %></th>
-    <th><%= t('Lead') %></th>
-    <th><%= t('Active End Date') %></th>    
-  </tr>
 
-<% @project.project_members.order('active DESC, id DESC').each do |r| %>
-  <tr>
-    <td><%= r.user.name %></td> 
-    <td><%= r.active ? t('Yes') : t('No') %></td>
-    <td><%= r.created_at.strftime("%Y/%m/%d") %></td>
-    <td><%= r.project_role.name %></td>
-    <td><%= r.project_role_lead ? t('Yes') : t('No') %></td>
-    <td><%= r.active_end_date.strftime("%Y/%m/%d") if r.active_end_date.present? %></td>
- 
-  </tr>
-<% end %>
-</table>
-</p>
 <p>
     <b><%= t('Cancelled') %></b>
     <%= @project.cancelled ? t('Yes') : t('No') %>

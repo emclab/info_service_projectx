@@ -5,6 +5,11 @@ Rails.application.routes.draw do
   mount Authentify::Engine => '/authentify'
   mount Kustomerx::Engine => '/kustomerx'
   mount Searchx::Engine => '/search'
+  mount StateMachineLogx::Engine => '/sm_log'
+  mount BizWorkflowx::Engine => '/biz_wf'
+  mount OnboardDatax::Engine => '/onboard'
+  mount OnboardDataUploadx::Engine => '/onboard_upload'
+  mount ProjectMiscDefinitionx::Engine => '/misc_definition'
   
   resource :session
   
