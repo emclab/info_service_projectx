@@ -17,8 +17,8 @@ class CreateInfoServiceProjectxProjects < ActiveRecord::Migration
       t.text :decommission_reason
       t.date :initial_online_date
       t.date :fully_online_date
-
       t.timestamps
+      t.integer :project_category_id
     end
     
     add_index :info_service_projectx_projects, :customer_id
@@ -28,5 +28,6 @@ class CreateInfoServiceProjectxProjects < ActiveRecord::Migration
     add_index :info_service_projectx_projects, :decommissioned
     add_index :info_service_projectx_projects, :cancelled
     add_index :info_service_projectx_projects, [:cancelled, :decommissioned], :name => :info_service_projectx_projects_2_boolean
+    add_index :info_service_projectx_projects, :project_category_id
   end
 end
