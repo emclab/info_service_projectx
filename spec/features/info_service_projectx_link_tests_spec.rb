@@ -57,16 +57,36 @@ describe "LinkTests" do
       
     end
     it "works! (now write some real specs)" do
-      member1 = FactoryGirl.create(:info_service_projectx_project_member, :user_id => @u.id, :project_role_id => @proj_role.id, :active => true, active_end_date: nil)
-      member2 = FactoryGirl.create(:info_service_projectx_project_member, :user_id => @u.id, :project_role_id => @proj_role1.id, :active => true, active_end_date: nil)
-      qs = FactoryGirl.create(:info_service_projectx_project, :cancelled => false, :last_updated_by_id => @u.id, :customer_id => @cust.id, 
-                              :project_members => [member1, member2])
+      qs = FactoryGirl.create(:info_service_projectx_project, :cancelled => false, :last_updated_by_id => @u.id, :customer_id => @cust.id)
+      visit projects_path()      
+      click_link 'Edit'
+      save_and_open_page
+      page.should have_content('Edit Project')
+      fill_in 'project_name', with: 'a new name'
+      click_button 'Save'
+      save_and_open_page
+      #bad data
+      visit projects_path()      
+      click_link 'Edit'
+      fill_in 'project_name', with: ''
+      click_button 'Save'
+      save_and_open_page
+      #
       visit projects_path(:customer_id => @cust.id)
       save_and_open_page
       page.should have_content('Projects')
       click_link 'New Project'
-      #save_and_open_page
-      page.should have_content('New Project')
+      fill_in 'project_name', with: 'a name'
+      select('proj status', from: 'project_status_id')
+      click_button 'Save'
+      save_and_open_page
+      #bad data
+      visit projects_path(customer_id: @cust.id)
+      click_link 'New Project'
+      fill_in 'project_name', with: 'a new name'
+      click_button 'Save'
+      save_and_open_page
+      #
       visit projects_path
       save_and_open_page
       page.should have_content('Projects')
@@ -79,22 +99,6 @@ describe "LinkTests" do
       click_link 'New Log'
       page.should have_content('Log')
       #save_and_open_page
-      visit projects_path()      
-      click_link 'Edit'
-      save_and_open_page
-      page.should have_content('Edit Project')
-      
-      
-      visit projects_path(:customer_id => @cust.id)
-      
-      
-      visit projects_path(:customer_id => @cust.id)
-      
-      
-      visit projects_path(:customer_id => @cust.id)
-      
-      
-      visit projects_path(:customer_id => @cust.id)     
       
     end
   end

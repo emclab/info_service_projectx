@@ -22,6 +22,10 @@
   <%= @project.status.try(:name) if @project.status_id.present? %>
 </p>
 <p>
+  <b><%= t('Project Category') %></b>
+  <%= @project.project_category.try(:name) if @project.project_category_id.present? %>
+</p>
+<p>
   <b><%= t('Sales') %></b>
   <%= @project.customer.sales.name %>
 </p>
@@ -31,48 +35,24 @@
 </p>
 <p>
     <b><%= t('Develop Start Date') %></b>
-    <%= @project.develop_start_date.strftime('%Y/%m/%d') %>
+    <%= @project.develop_start_date.strftime('%Y/%m/%d') if @project.develop_start_date.present? %>
 </p>
 <p>
     <b><%= t('Develop Finish Date') %></b>
-    <%= @project.develop_finish_date.strftime('%Y/%m/%d') %>
+    <%= @project.develop_finish_date.strftime('%Y/%m/%d') if @project.develop_finish_date.present? %>
 </p>
 <p>
     <b><%= t('Project Description') %></b>
     <%= @project.project_desp %>
 </p>
-<p>
-    <b><%= t('Project Memeber') %></b>
-    <table class="table table-striped">
-  <tr>
-    <th><%= t('User Name') %></th>
-    <th><%= t('Active') %></th>
-    <th><%= t('Created At') %></th>
-    <th><%= t('Project Role') %></th>
-    <th><%= t('Lead') %></th>
-    <th><%= t('Active End Date') %></th>    
-  </tr>
 
-<% @project.project_members.order('active DESC, id DESC').each do |r| %>
-  <tr>
-    <td><%= r.user.name %></td> 
-    <td><%= r.active ? t('Yes') : t('No') %></td>
-    <td><%= r.created_at.strftime("%Y/%m/%d") %></td>
-    <td><%= r.project_role.name %></td>
-    <td><%= r.project_role_lead ? t('Yes') : t('No') %></td>
-    <td><%= r.active_end_date.strftime("%Y/%m/%d") if r.active_end_date.present? %></td>
- 
-  </tr>
-<% end %>
-</table>
-</p>
 <p>
     <b><%= t('Cancelled') %></b>
     <%= @project.cancelled ? t('Yes') : t('No') %>
 </p>
 <p>
     <b><%= t('Cancell Date') %></b>
-    <%= @project.cancelled_date.strftime('%Y/%m/%d') %>
+    <%= @project.cancelled_date.strftime('%Y/%m/%d') if @project.cancelled_date.present? %>
 </p>
 <p>
     <b><%= t('Cancell Reason') %></b>
@@ -84,7 +64,7 @@
 </p>
 <p>
     <b><%= t('Decommission Date') %></b>
-    <%= @project.decommissioned_date.strftime('%Y/%m/%d') %>
+    <%= @project.decommissioned_date.strftime('%Y/%m/%d') if @project.decommissioned_date.present? %>
 </p>
 <p>
     <b><%= t('Decommission Reason') %></b>

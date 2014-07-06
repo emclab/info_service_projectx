@@ -15,9 +15,16 @@
     <th><%= t('Develop Finish Date') %></th>
     <th><%= t('Initial Online Date') %></th>
     <th><%= t('Fully Online Date') %></th>
-    <th><%= t('Project Members') %></th>
     <th><%= t('Cancelled') %></th>
     <th><%= t('Decommissioned') %></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
     <th></th>
     <th></th>
     <th></th>
@@ -32,7 +39,7 @@
         <td><%= r.id %></td>
     <% end %>
   	<% if has_action_right?('show',InfoServiceProjectx.customer_class.to_s.underscore.pluralize, r.customer ) %>
-  	  <td><%= link_to r.customer.short_name, SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI::escape(eval(InfoServiceProjectx.show_customer_path))}"  %></td>
+  	  <td><%= link_to r.customer.short_name, SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI::escape(kustomerx.customer_path(id: r.customer_id))}"  %></td>
   	<% else %>
   	  <td><%= prt(r, 'customer.short_name') %></td>
   	<% end %>  	    
@@ -43,9 +50,22 @@
     <td><%= r.develop_finish_date.strftime("%Y/%m/%d") if r.develop_finish_date.present? %></td>
     <td><%= r.initial_online_date.strftime("%Y/%m/%d") if r.initial_online_date.present? %></td>
     <td><%= r.fully_online_date.strftime("%Y/%m/%d") if r.fully_online_date.present? %></td>
-    <td><%= return_project_member(r) %></td>
     <td><%= r.cancelled ? t('Yes') : t('No') %></td>
     <td><%= r.decommissioned ? t('Yes') : t('No') %></td>
+    <td><%= link_to t('Base Onboard-Engine Config'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(onboard_data_uploadx.engine_configs_path(:project_id => r.id))}" , :class => BUTTONS_CLS['action']   if has_action_right?('index', 'onboard_data_uploadx/engine_configs')  %></td>
+    <td><%= link_to t('Onboard-Engine Config'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(onboard_datax.onboard_engine_configs_path(:project_id => r.id))}" , :class => BUTTONS_CLS['action']   if has_action_right?('index', 'onboard_datax/onboard_engine_configs')  %></td>
+    <td><%= link_to t('Base Onboard-User Access'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(onboard_data_uploadx.user_accesses_path(:project_id => r.id))}" , :class => BUTTONS_CLS['action']   if has_action_right?('index', 'onboard_data_uploadx/user_accesses')  %></td>
+    <td><%= link_to t('Onboard-User Access'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(onboard_datax.onboard_user_accesses_path(:project_id => r.id))}" , :class => BUTTONS_CLS['action']   if has_action_right?('index', 'onboard_datax/onboard_user_accesses')  %></td>
+    <td><%= link_to t('Base Onboard-Engine Init'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(onboard_data_uploadx.engine_inits_path(:project_id => r.id))}" , :class => BUTTONS_CLS['action']   if has_action_right?('index', 'onboard_data_uploadx/engine_inits')  %></td>
+    <td><%= link_to t('Onboard-Engine Init'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(onboard_datax.onboard_engine_inits_path(:project_id => r.id))}" , :class => BUTTONS_CLS['action']   if has_action_right?('index', 'onboard_datax/onboard_engine_inits')  %></td>
+    <td><%= link_to t('Base Onboard-Search/Stat Config'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(onboard_data_uploadx.search_stat_configs_path(:project_id => r.id))}" , :class => BUTTONS_CLS['action']   if has_action_right?('index', 'onboard_data_uploadx/search_stat_configs')  %></td>
+    <td><%= link_to t('Onboard-Search/Stat Config'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(onboard_datax.onboard_search_stat_configs_path(:project_id => r.id))}" , :class => BUTTONS_CLS['action']   if has_action_right?('index', 'onboard_datax/onboard_search_stat_configs')  %></td>
+    <td><%= link_to t('Team Members'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(resource_allocx.allocations_path(:resource_id => r.id, :resource_string => params[:controller], :detailed_resource_category => 'team_member'))}" , :class => BUTTONS_CLS['action']   if has_action_right?('index', 'resource_allocx/allocations')  %></td>
+    <td><%= link_to t('Team Members'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(resource_allocx.allocations_path(:resource_id => r.id, :resource_string => params[:controller], :detailed_resource_category => 'team_member'))}" , :class => BUTTONS_CLS['action']   if has_action_right?('index_team_member', 'resource_allocx/allocations')  %></td>
+    <td><%= link_to t('Engines'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(resource_allocx.allocations_path(:resource_id => r.id, :resource_string => params[:controller], :detailed_resource_category => 'engine' ))}" , :class => BUTTONS_CLS['action']   if has_action_right?('index', 'resource_allocx/allocations')  %></td>
+    <td><%= link_to t('Engines'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(resource_allocx.allocations_path(:resource_id => r.id, :resource_string => params[:controller], :detailed_resource_category => 'engine' ))}" , :class => BUTTONS_CLS['action']   if has_action_right?('index_engine', 'resource_allocx/allocations')  %></td>
+    <td><%= link_to t('Role Definitions'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(project_misc_definitionx.misc_definitions_path(:project_id => r.id, :definition_category => 'role_definition', :subaction => 'role_definition' ))}" , :class => BUTTONS_CLS['action']   if has_action_right?('index_role_definition', 'project_misc_definitionx/misc_definitions')  %></td>
+    <td><%= link_to t('Role Definitions'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(project_misc_definitionx.misc_definitions_path(:project_id => r.id, :definition_category => 'role_definition'))}" , :class => BUTTONS_CLS['action']   if has_action_right?('index', 'project_misc_definitionx/misc_definitions')  %></td>
     <td><%= link_to t('Edit'), SUBURI + "/authentify/view_handler?index=1&url=#{edit_project_path(r)}" , :class => BUTTONS_CLS['action']   if has_action_right?('update', params[:controller], r )  %></td>
     
   </tr>

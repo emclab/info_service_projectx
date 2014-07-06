@@ -1,5 +1,5 @@
 <% if @view_in_config && @erb_code %>
-  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  <%= render inline: @erb_code %>
   
 <% else %>
 <%= simple_form_for @project do |f| %>
@@ -16,18 +16,6 @@
     <%= f.input :status_id, :label => t('Status'), :collection => Commonx::CommonxHelper.return_misc_definitions('project_status'), :label_method => :name, :value_method => :id,
                 :include_blank => true unless readonly?(@project, 'status_id') %>
     <%= f.input :status_name, :label => t('Status'), :input_html => {:value => @project.status.name} if readonly?(@project, 'status_id') %>
-    <%=t('Project Members')%>:
-    <%= f.fields_for :project_members, @project.project_members.first do |builder| %>
-      <p>
-        <%= render :partial => 'first_project_member', :locals => {:f => builder} %>
-      </p>  
-    <% end %>
-    <%= f.fields_for :project_members, @project.project_members.offset(1) do |builder| %>
-      <p>
-        <%= render :partial => 'project_members', :locals => {:f => builder} %>
-      </p>  
-    <% end %>    
-    <p><%= link_to_add_fields t("Add Project Member"), f, :project_members %></p>
     <%= f.input :decommissioned, :label => t('Decommissioned'), :as => :boolean unless readonly?(@project, 'decommissioned') %>
     <%= f.input :decommissioned_noupdate, :label => t('Decommissioned'), :input_html => {:value => (@project.decommissioned ? t('Yes') : t('No'))} if readonly?(@project, 'decommissioned') %>
     <%= f.input :decommission_reason, :label => t('Decommission Reason'), :input_html => { :rows => 4}, :readonly => readonly?(@project, 'decommission_reason') %>
