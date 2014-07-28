@@ -16,8 +16,8 @@ module InfoServiceProjectx
       @role = FactoryGirl.create(:role_definition)
       ur = FactoryGirl.create(:user_role, :role_definition_id => @role.id)
       ul = FactoryGirl.build(:user_level, :sys_user_group_id => ug.id)
-      @u = FactoryGirl.create(:user, :user_levels => [ul], :user_roles => [ur])
       @cust = FactoryGirl.create(:kustomerx_customer)
+      @u = FactoryGirl.create(:user, :user_levels => [ul], :user_roles => [ur], :customer_id => @cust.id)
       
     end
       
@@ -130,6 +130,20 @@ module InfoServiceProjectx
         qs = FactoryGirl.create(:info_service_projectx_project)
         get 'show' , {:use_route => :info_service_projectx,  :id => qs.id}
         response.should be_success
+      end
+    end
+    
+    describe "Index for customer" do
+      it "should return customer's project" do
+        user_access = FactoryGirl.create(:user_access, :action => 'index_for_customer', :resource => 'info_service_projectx_projects', :role_definition_id => @role.id, :rank => 1,
+        :sql_code => "InfoServiceProjectx::Project.where(:customer_id => session[:session_customer_id]).order('id')")  
+        session[:user_id] = @u.id
+        session[:session_customer_id] = @cust.id
+        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
+        qs = FactoryGirl.create(:info_service_projectx_project, :cancelled => false, :last_updated_by_id => @u.id, :customer_id => @cust.id)
+        qs1 = FactoryGirl.create(:info_service_projectx_project, :cancelled => false, :last_updated_by_id => @u.id,  :name => 'newnew', :customer_id => @cust.id + 1)
+        get 'index_for_customer' , {:use_route => :info_service_projectx, :customer_id => @cust.id }
+        assigns(:projects).should =~ [qs]    
       end
     end
   

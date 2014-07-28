@@ -56,6 +56,14 @@ module InfoServiceProjectx
       @erb_code = find_config_const('project_show_view', 'info_service_projectx')
     end
     
+    def index_for_customer
+      @title = t('Projects')
+      @projects =  params[:info_service_projectx_projects][:model_ar_r]
+      @projects = @projects.where(:customer_id => @customer.id)
+      @projects = @projects.page(params[:page]).per_page(@max_pagination)
+      @erb_code = find_config_const('project_index_for_customer_view', 'info_service_projectx')
+    end
+    
     protected
     def load_parent_record
       @customer = InfoServiceProjectx.customer_class.find_by_id(params[:customer_id]) if params[:customer_id].present?

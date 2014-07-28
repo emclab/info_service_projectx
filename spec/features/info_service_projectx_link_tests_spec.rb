@@ -29,7 +29,6 @@ describe "LinkTests" do
       @role = FactoryGirl.create(:role_definition)
       ur = FactoryGirl.create(:user_role, :role_definition_id => @role.id)
       ul = FactoryGirl.build(:user_level, :sys_user_group_id => ug.id)
-      @u = FactoryGirl.create(:user, :user_levels => [ul], :user_roles => [ur])
       
       ua1 = FactoryGirl.create(:user_access, :action => 'index', :resource => 'info_service_projectx_projects', :role_definition_id => @role.id, :rank => 1,
            :sql_code => "InfoServiceProjectx::Project.where(:cancelled => false).order('id')")
@@ -43,11 +42,15 @@ describe "LinkTests" do
            :sql_code => "")
       user_access = FactoryGirl.create(:user_access, :action => 'create_project', :resource => 'commonx_logs', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
-    
+      user_access = FactoryGirl.create(:user_access, :action => 'index_for_customer', :resource => 'info_service_projectx_projects', :role_definition_id => @role.id, :rank => 1,
+        :sql_code => "InfoServiceProjectx::Project.where(:customer_id => session[:session_customer_id]).order('id')")  
+        
+      
       @proj_status = FactoryGirl.create(:commonx_misc_definition, :for_which => 'project_status', :active => true, :name => 'proj status')
       @proj_role = FactoryGirl.create(:commonx_misc_definition, :for_which => 'project_role', :active => true, :name => 'proj role')
       @proj_role1 = FactoryGirl.create(:commonx_misc_definition, :for_which => 'project_role', :active => true, :name => 'proj role new')
       @cust = FactoryGirl.create(:kustomerx_customer)
+      @u = FactoryGirl.create(:user, :user_levels => [ul], :user_roles => [ur], :customer_id => @cust.id)
       
       visit '/'
       #save_and_open_page
@@ -100,6 +103,12 @@ describe "LinkTests" do
       page.should have_content('Log')
       #save_and_open_page
       
+    end
+    
+    it "works for index_for_customer" do
+      visit index_for_customer_projects_path(:customer_id => @cust.id)
+      page.should have_content('Projects')
+      save_and_open_page
     end
   end
 end

@@ -1,0 +1,49 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
+<h4><%=@title %></h4>
+<div class="pagination"><%= will_paginate models %></div>
+
+<table class="table table-striped">
+  <tr>
+    <th><%= t('Customer') %></th>
+    <th><%= t('Project Name') %></th>
+    <th><%= t('Server#') %></th>
+    <th><%= t('Project Status') %></th>
+    <th><%= t('Develop Start Date') %></th>
+    <th><%= t('Develop Finish Date') %></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% models.each do |r| %>
+  <tr>    
+    <td><%= prt(r, 'customer.name') %></td>
+  	<td><%= prt(r, :name) %></td> 
+    <td><%= prt(r, :service_num) %></td>
+    <td><%= prt(r, 'status.name') if r.status_id.present? %></td>
+    <td><%= r.develop_start_date.strftime("%Y/%m/%d") if r.develop_start_date.present? %></td>
+    <td><%= r.develop_finish_date.strftime("%Y/%m/%d") if r.develop_finish_date.present? %></td>
+    <td><%#= link_to t('Project Info'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(sw_project_customer_qnax.project_infos_path(:project_id => r.project_id))}" , :class => BUTTONS_CLS['action'] if has_action_right?('index', 'sw_project_customer_qnax/project_infos' )  %></td>
+    <td><%= link_to t('Role Definitions'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(project_misc_definitionx.misc_definitions_path(:project_id => r.project_id, :definition_category => 'customer_defined_role', :subaction => 'customer_defined_role'))}" , :class => BUTTONS_CLS['action'] if has_action_right?('index_customer_defined_role', 'project_misc_definitionx/misc_definitions' )  %></td>
+    <td><%= link_to t('Biz Steps'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(project_misc_definitionx.misc_definitions_path(:project_id => r.project_id, :definition_category => 'customer_defined_biz_step', :subaction => 'customer_defined_biz_step'))}" , :class => BUTTONS_CLS['action'] if has_action_right?('index_customer_defined_biz_step', 'project_misc_definitionx/misc_definitions' )  %></td>
+       
+  </tr>
+<% end %>
+</table>
+
+<table class="table table-striped">
+  <tr>
+    <th>
+    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action']  %>
+    </th>
+  </tr>
+</table>
+
+<% end %>
+
+
+
