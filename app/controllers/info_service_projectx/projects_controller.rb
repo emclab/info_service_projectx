@@ -2,7 +2,7 @@ require_dependency "info_service_projectx/application_controller"
 
 module InfoServiceProjectx
   class ProjectsController < ApplicationController
-    before_filter :require_employee
+    #before_filter :require_employee
     before_filter :load_parent_record
     
     def index
@@ -59,7 +59,7 @@ module InfoServiceProjectx
     def index_for_customer
       @title = t('Projects')
       @projects =  params[:info_service_projectx_projects][:model_ar_r]
-      @projects = @projects.where(:customer_id => @customer.id)
+      @projects = @projects.where(:customer_id => session[:session_customer_id])
       @projects = @projects.page(params[:page]).per_page(@max_pagination)
       @erb_code = find_config_const('project_index_for_customer_view', 'info_service_projectx')
     end

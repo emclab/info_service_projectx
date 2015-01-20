@@ -16,6 +16,8 @@
     <th></th>
     <th></th>
     <th></th>
+    <th></th>
+    <th></th>
   </tr>
 
 <% models.each do |r| %>
@@ -26,9 +28,11 @@
     <td><%= prt(r, 'status.name') if r.status_id.present? %></td>
     <td><%= r.develop_start_date.strftime("%Y/%m/%d") if r.develop_start_date.present? %></td>
     <td><%= r.develop_finish_date.strftime("%Y/%m/%d") if r.develop_finish_date.present? %></td>
-    <td><%#= link_to t('Project Info'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(sw_project_customer_qnax.project_infos_path(:project_id => r.project_id))}" , :class => BUTTONS_CLS['action'] if has_action_right?('index', 'sw_project_customer_qnax/project_infos' )  %></td>
-    <td><%= link_to t('Role Definitions'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(project_misc_definitionx.misc_definitions_path(:project_id => r.project_id, :definition_category => 'customer_defined_role', :subaction => 'customer_defined_role'))}" , :class => BUTTONS_CLS['action'] if has_action_right?('index_customer_defined_role', 'project_misc_definitionx/misc_definitions' )  %></td>
-    <td><%= link_to t('Biz Steps'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(project_misc_definitionx.misc_definitions_path(:project_id => r.project_id, :definition_category => 'customer_defined_biz_step', :subaction => 'customer_defined_biz_step'))}" , :class => BUTTONS_CLS['action'] if has_action_right?('index_customer_defined_biz_step', 'project_misc_definitionx/misc_definitions' )  %></td>
+    <td><%= link_to t('Project Info'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(sw_project_customer_qnax.project_infos_path(:project_id => r.project_id))}" , :class => BUTTONS_CLS['action'] if has_action_right?('index', 'sw_project_customer_qnax/project_infos', r )  %></td>
+    <td><%= link_to t('Biz Forms'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(sw_project_customer_qnax.biz_forms_path(:project_id => r.project_id))}" , :class => BUTTONS_CLS['action'] if has_action_right?('index', 'sw_project_customer_qnax/biz_forms', r )  %></td>
+    <td><%= link_to t('User Roles'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(sw_project_customer_qnax.user_roles_path(:project_id => r.project_id))}" , :class => BUTTONS_CLS['action'] if has_action_right?('index', 'sw_project_customer_qnax/user_roles', r )  %></td>
+    <td><%= link_to t('Role Access Rights'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(sw_project_customer_qnax.role_access_rights_path(:project_id => r.project_id))}" , :class => BUTTONS_CLS['action'] if has_action_right?('index', 'sw_project_customer_qnax/role_access_rights', r )  %></td>
+    <td><%= link_to t('Biz Workflows'), SUBURI + "/authentify/view_handler?index=1&url=#{SUBURI + CGI.escape(sw_project_customer_qnax.workflows_path(:project_id => r.project_id))}" , :class => BUTTONS_CLS['action'] if has_action_right?('index', 'sw_project_customer_qnax/workflows', r )  %></td>
        
   </tr>
 <% end %>

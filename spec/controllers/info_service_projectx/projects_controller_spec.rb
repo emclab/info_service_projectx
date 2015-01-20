@@ -5,7 +5,7 @@ module InfoServiceProjectx
   
     before(:each) do
       controller.should_receive(:require_signin)
-      controller.should_receive(:require_employee)
+      #controller.should_receive(:require_employee)
     end
     before(:each) do
       #@project_num_time_gen = FactoryGirl.create(:engine_config, :engine_name => 'heavy_machinery_projectx', :engine_version => nil, :argument_name => 'project_num_time_gen', :argument_value => ' InfoServiceProjectx::Project.last.nil? ? (Time.now.strftime("%Y%m%d") + "-"  + 112233.to_s + "-" + rand(100..999).to_s) :  (Time.now.strftime("%Y%m%d") + "-"  + (InfoServiceProjectx::Project.last.project_num.split("-")[-2].to_i + 555).to_s + "-" + rand(100..999).to_s)')
