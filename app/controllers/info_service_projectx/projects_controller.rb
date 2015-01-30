@@ -68,7 +68,7 @@ module InfoServiceProjectx
       @title = t('Select Engines for Check')
       @project_id = params[:project_id].to_i
       @project = InfoServiceProjectx::Project.find_by_id(params[:project_id])
-      engine_ids = ResourceAllocx::Allocation.where('resource_id = ? AND resource_string = ? AND detailed_resource_category = ?', @project.id, params[:controller],  'engine' ).order('name').pluck('detailed_resource_id')
+      engine_ids = ResourceAllocx::Allocation.where('resource_id = ? AND resource_string = ? AND detailed_resource_category = ?', @project.id, params[:controller],  'engine' ).pluck('detailed_resource_id')
       @engines = OnboardDataUploadx.engine_class.where(active: true).where(:id => engine_ids).order('id')
       @erb_code = find_config_const('project_engine_for_config_check_view', 'info_service_projectx')
       redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Select engine(s) for check") if @engines.blank?

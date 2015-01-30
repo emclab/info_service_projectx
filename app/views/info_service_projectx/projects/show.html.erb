@@ -81,9 +81,9 @@
   <tr>
     <th>
     	<%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action'] %>
-    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     	<%= link_to t('Check Config Argument'), SUBURI + "/authentify/view_handler?index=1&url=#{engine_for_config_check_projects_path(project_id: @project.id)}", :id => 'btn1_link', :class => BUTTONS_CLS['action'] %>
-    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     	<%= link_to t('Check User Access'), SUBURI + "/authentify/view_handler?index=1&url=#{engine_for_access_check_projects_path(project_id: @project.id)}", :id => 'btn2_link', :class => BUTTONS_CLS['action'] %>
     	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     	<%= link_to t('New Log'), SUBURI + commonx.new_log_path(:resource_id => @project.id, :resource_name => params[:controller], :subaction => 'project',
