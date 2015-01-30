@@ -1,0 +1,39 @@
+<div id="main_body">
+<% if @view_in_config && @erb_code %>
+<%= render inline: @erb_code %>
+<% else %>
+
+<p><%=t('Project')%>=<%=@project.name if @project %></p>
+<%=t('# of engines')%>=<%=@engines.count if @engines %>
+<%= form_tag list_user_access_projects_path, :method => :get do %>
+<table class="table table-striped">
+  <tr>
+  	 <th></th>
+     <th><%= t('Engine Name') %></th>
+     <th><%= t('Engine Desp') %></th>
+  </tr>
+
+<% @engines.each do |r| %>
+  <% @roles.each do |role| %>
+    <tr>
+      <td><%= check_box_tag 'id_array[]', [r.id,role.id].join(',') %></td>
+      <td><%= r.name %></td>
+      <td><%= role.name %></td>
+      <td><%= r.module_desp[0..255] if r.module_desp %></td>
+    </tr>
+  <% end %>
+<% end %>
+   <table class="table table-striped">
+	  <tr>
+	    <th>
+  		  <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  		  &nbsp;&nbsp;&nbsp;&nbsp;
+  		  <%= submit_tag t('Save') ,:name => "save[#{@project_id}]", :class => BUTTONS_CLS['action'] %>
+  	    </th>
+	  </tr>
+	</table> 
+
+<% end %>
+
+<% end %>
+</div>

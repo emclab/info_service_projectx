@@ -1,4 +1,5 @@
 InfoServiceProjectx::customer_class = 'Kustomerx::Customer'
+InfoServiceProjectx.module_info_class = 'SwModuleInfox::ModuleInfo'
 #InfoServiceProjectx::service_module_path = ''
 #InfoServiceProjectx::support_module_path = ''
 #InfoServiceProjectx::develop_mgmt_module_path = ''
