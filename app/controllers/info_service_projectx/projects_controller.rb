@@ -145,7 +145,7 @@ module InfoServiceProjectx
                             where('onboard_data_uploadx_user_accesses.action NOT IN (?)', onboarded_actions).order('resource, action').uniq() 
         output_string += "\n" +"\n" + "User Access - NOT Onboarded" + "\n" + "\n"
         user_access_not_onboarded.each do |e_arg|
-          output_string += e_arg.resource + ',  ' + e_arg.action + "\n"
+          output_string += e_arg.resource + ',  ' + e_arg.action + "\n" unless (output_string.include?(e_arg.resource) && output_string.include?(e_arg.action))
         end
       end
       output_string

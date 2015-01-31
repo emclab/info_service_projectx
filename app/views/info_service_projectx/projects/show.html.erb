@@ -27,7 +27,7 @@
 </p>
 <p>
   <b><%= t('Sales') %></b>
-  <%= @project.customer.sales.name %>
+  <%= @project.customer.sales.name if @project.customer.sales_id.present? %>
 </p>
 <p>
   <b><%= t('Last Updated By') %></b>
