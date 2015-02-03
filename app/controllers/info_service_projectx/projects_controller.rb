@@ -115,7 +115,8 @@ module InfoServiceProjectx
         onboarded_arguments = OnboardDatax::OnboardEngineConfig.joins(:engine_config).where('onboard_datax_onboard_engine_configs.engine_id = ? AND onboard_datax_onboard_engine_configs.project_id = ?', e_id, project.id).order('argument_name')
         output_string += "\n" +"\n" + "\n" +"\n" + '=============' + "#{engine_name}" + '===============' + "\n" + "\n" + "Onboarded Arguments" + "\n" + "\n"
         onboarded_arguments.each do |arg|
-          output_string += arg.argument_name + ',  ' + arg.argument_desp + "\n"
+          output_string += arg.argument_name + ',  ' + arg.argument_desp + "\n" if arg.argument_desp.present?
+          output_string += arg.argument_name + "\n" if arg.argument_desp.blank?
         end
         engine_arguments_not_onboarded = OnboardDataUploadx::EngineConfig.where('onboard_data_uploadx_engine_configs.engine_id = ?', e_id).where('onboard_data_uploadx_engine_configs.argument_name NOT IN (?)', onboarded_arguments).order('argument_name').pluck('argument_name').uniq()
         output_string += "\n" +"\n" + "Arguments - NOT Onboarded" + "\n" + "\n"
