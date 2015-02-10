@@ -8,17 +8,18 @@ gemspec
 # jquery-rails is used by the dummy application
 gem "jquery-rails"
 gem "will_paginate"
+gem 'tzinfo-data'
 
-gem 'authentify', :path => '../authentify'  #for rspec test
-gem 'commonx', :path => '../commonx'
-gem 'kustomerx', :path => '../kustomerx'
-gem 'searchx', :path => '../searchx'
-gem 'project_misc_definitionx', :path => '../project_misc_definitionx'
-gem 'onboard_data_uploadx', :path => '../onboard_data_uploadx'
-gem 'onboard_datax', :path => '../onboard_datax'
-gem 'state_machine_logx', :path => '../state_machine_logx'
-gem 'biz_workflowx', :path => '../biz_workflowx'
-gem 'sw_module_infox', :path => '../sw_module_infox'
+gem 'authentify', :path => '../authentify', branch: '4.2.0'  #for rspec test
+gem 'commonx', :path => '../commonx', branch: '4.2.0'
+gem 'kustomerx', :path => '../kustomerx', branch: '4.2.0'
+gem 'searchx', :path => '../searchx', branch: '4.2.0'
+gem 'project_misc_definitionx', :path => '../project_misc_definitionx', branch: '4.2.0'
+gem 'onboard_data_uploadx', :path => '../onboard_data_uploadx', branch: '4.2.0'
+gem 'onboard_datax', :path => '../onboard_datax', branch: '4.2.0'
+gem 'state_machine_logx', :path => '../state_machine_logx', branch: '4.2.0'
+gem 'biz_workflowx', :path => '../biz_workflowx', branch: '4.2.0'
+gem 'sw_module_infox', :path => '../sw_module_infox', branch: '4.2.0'
 
 # Declare any dependencies that are still in development here instead of in
 # your gemspec. These might include edge Rails or gems from your path or
