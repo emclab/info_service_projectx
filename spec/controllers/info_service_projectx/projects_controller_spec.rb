@@ -19,6 +19,7 @@ module InfoServiceProjectx
       @cust = FactoryGirl.create(:kustomerx_customer)
       @u = FactoryGirl.create(:user, :user_levels => [ul], :user_roles => [ur], :customer_id => @cust.id)
       
+      session[:user_role_ids] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id).user_role_ids
     end
       
     render_views
@@ -28,7 +29,6 @@ module InfoServiceProjectx
         user_access = FactoryGirl.create(:user_access, :action => 'index', :resource => 'info_service_projectx_projects', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "InfoServiceProjectx::Project.where(:cancelled => false).order('id')")  
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         qs = FactoryGirl.create(:info_service_projectx_project, :cancelled => false, :last_updated_by_id => @u.id)
         qs1 = FactoryGirl.create(:info_service_projectx_project, :cancelled => false, :last_updated_by_id => @u.id,  :name => 'newnew')
         get 'index' , {:use_route => :info_service_projectx}
@@ -39,7 +39,6 @@ module InfoServiceProjectx
         user_access = FactoryGirl.create(:user_access, :action => 'index', :resource => 'info_service_projectx_projects', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "InfoServiceProjectx::Project.where(:cancelled => false).order('id')")        
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         qs = FactoryGirl.create(:info_service_projectx_project, :cancelled => false, :last_updated_by_id => @u.id)
         qs1 = FactoryGirl.create(:info_service_projectx_project, :cancelled => true, :last_updated_by_id => @u.id,  :name => 'newnew')
         get 'index' , {:use_route => :info_service_projectx}
@@ -54,7 +53,6 @@ module InfoServiceProjectx
         user_access = FactoryGirl.create(:user_access, :action => 'create', :resource => 'info_service_projectx_projects', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")        
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         get 'new' , {:use_route => :info_service_projectx}
         response.should be_success
       end
@@ -66,7 +64,6 @@ module InfoServiceProjectx
         user_access = FactoryGirl.create(:user_access, :action => 'create', :resource => 'info_service_projectx_projects', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")        
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         qs = FactoryGirl.attributes_for(:info_service_projectx_project)
         get 'create' , {:use_route => :info_service_projectx,  :project => qs}
         response.should redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
@@ -76,7 +73,6 @@ module InfoServiceProjectx
         user_access = FactoryGirl.create(:user_access, :action => 'create', :resource => 'info_service_projectx_projects', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")        
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         qs = FactoryGirl.attributes_for(:info_service_projectx_project, :name => nil)
         get 'create' , {:use_route => :info_service_projectx,  :project => qs}
         response.should render_template("new")
@@ -89,7 +85,6 @@ module InfoServiceProjectx
         user_access = FactoryGirl.create(:user_access, :action => 'update', :resource => 'info_service_projectx_projects', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")        
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         qs = FactoryGirl.create(:info_service_projectx_project, :customer_id => @cust.id)
         get 'edit' , {:use_route => :info_service_projectx,  :id => qs.id}
         response.should be_success
@@ -103,7 +98,6 @@ module InfoServiceProjectx
         user_access = FactoryGirl.create(:user_access, :action => 'update', :resource => 'info_service_projectx_projects', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")        
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         qs = FactoryGirl.create(:info_service_projectx_project)
         get 'update' , {:use_route => :info_service_projectx,  :id => qs.id, :project => {:name => 'newnew'}}
         response.should redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
@@ -113,7 +107,6 @@ module InfoServiceProjectx
         user_access = FactoryGirl.create(:user_access, :action => 'update', :resource => 'info_service_projectx_projects', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")        
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         qs = FactoryGirl.create(:info_service_projectx_project)
         get 'update' , {:use_route => :info_service_projectx,  :id => qs.id, :project => {:name => nil}}
         response.should render_template("edit")
@@ -126,7 +119,6 @@ module InfoServiceProjectx
         user_access = FactoryGirl.create(:user_access, :action => 'show', :resource => 'info_service_projectx_projects', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")        
         session[:user_id] = @u.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         qs = FactoryGirl.create(:info_service_projectx_project)
         get 'show' , {:use_route => :info_service_projectx,  :id => qs.id}
         response.should be_success
@@ -139,7 +131,6 @@ module InfoServiceProjectx
         :sql_code => "InfoServiceProjectx::Project.where(:customer_id => session[:session_customer_id]).order('id')")  
         session[:user_id] = @u.id
         session[:session_customer_id] = @cust.id
-        session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         qs = FactoryGirl.create(:info_service_projectx_project, :cancelled => false, :last_updated_by_id => @u.id, :customer_id => @cust.id)
         qs1 = FactoryGirl.create(:info_service_projectx_project, :cancelled => false, :last_updated_by_id => @u.id,  :name => 'newnew', :customer_id => @cust.id + 1)
         get 'index_for_customer' , {:use_route => :info_service_projectx, :customer_id => @cust.id }
