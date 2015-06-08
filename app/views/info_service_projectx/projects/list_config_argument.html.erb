@@ -2,12 +2,11 @@
   <%= render inline: ERB.new(@erb_code).result(binding) %>
   
 <% else %>
-<div id="main_body">
+
 <p>
   <%= simple_format(h @project_config_arguments) %>
 </p>
 <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action'] %>
     		
-</div>
-
 <% end %>
+

@@ -2,6 +2,7 @@
   <%= render inline: @erb_code %>
   
 <% else %>
+<h4><%= @title %></h4>
 <%= simple_form_for @project do |f| %>
     <%= f.input :name, :label => t('Project Name'), :readonly => readonly?(@project, 'name') %>
     <%= f.input :service_num, :label => t('Service#'), :readonly => readonly?(@project, 'service_num') %>
