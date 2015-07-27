@@ -21,10 +21,10 @@ module InfoServiceProjectx
 
 
     def create
-      @project = InfoServiceProjectx::Project.new(params[:project], :as => :role_new)
+      @project = InfoServiceProjectx::Project.new(new_params)
       @project.last_updated_by_id = session[:user_id]
       if @project.save
-        redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
+        redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Saved!")
       else
         flash[:notice] = t('Data Error. Not Saved!')
         @erb_code = find_config_const('project_new_view', 'info_service_projectx')
@@ -41,8 +41,8 @@ module InfoServiceProjectx
     def update
         @project = InfoServiceProjectx::Project.find_by_id(params[:id])
         @project.last_updated_by_id = session[:user_id]
-        if @project.update_attributes(params[:project], :as => :role_update)
-          redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
+        if @project.update_attributes(edit_params)
+          redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Updated!")
         else
           flash[:notice] = t('Data Error. Not Updated!')
           @erb_code = find_config_const('project_edit_view', 'info_service_projectx')
@@ -71,7 +71,7 @@ module InfoServiceProjectx
       engine_ids = ResourceAllocx::Allocation.where('resource_id = ? AND resource_string = ? AND detailed_resource_category = ?', @project.id, params[:controller],  'engine' ).pluck('detailed_resource_id')
       @engines = OnboardDataUploadx.engine_class.where(active: true).where(:id => engine_ids).order('id')
       @erb_code = find_config_const('project_engine_for_config_check_view', 'info_service_projectx')
-      redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Select engine(s) for check") if @engines.blank?
+      redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Select engine(s) for check") if @engines.blank?
     end
     
     def list_config_argument
@@ -90,7 +90,7 @@ module InfoServiceProjectx
       @engines = OnboardDataUploadx.engine_class.where(active: true).where(:id => engine_ids).order('name')
       @roles = OnboardDataUploadx.project_misc_definition_class.where(:project_id => @project_id).where(:definition_category => 'role_definition').order('ranking_index')
       @erb_code = find_config_const('project_engine_for_access_check_view', 'info_service_projectx')
-      redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Select engine(s) for access check") if @engines.blank?
+      redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Select engine(s) for access check") if @engines.blank?
     end
     
     def list_user_access
@@ -99,7 +99,7 @@ module InfoServiceProjectx
       engine_ids_array, role_ids = return_engine_n_role(params[:id_array])
       @project_user_accesses = check_user_access(project, engine_ids_array, role_ids)
       @erb_code = find_config_const('project_list_user_access_view', 'info_service_projectx')
-      redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Select access for onboard") if engine_ids_array.blank?
+      redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Select access for onboard") if engine_ids_array.blank?
     end
     
     protected
@@ -163,5 +163,18 @@ module InfoServiceProjectx
       return engine_ids, role_ids   #OnboardDataUploadx.project_misc_definition_class.where(:id => role_ids).order('ranking_index')
     end
     
+    private
+    
+    def new_params
+      params.require(:project).permit(:cancelled, :customer_id, :decommissioned_date, :decommission_reason, :decommissioned,  :status_id, :cancelled_date, :cancell_reason,
+                    :fully_online_date, :initial_online_date, :name, :project_desp, :develop_start_date, :develop_finish_date, 
+                    :service_num, :project_category_id, :sales_id, :project_manager_id)
+    end
+    
+    def edit_params
+      params.require(:project).permit(:cancelled, :customer_id, :decommissioned_date, :decommission_reason, :decommissioned,  :cancelled_date, :cancell_reason,
+                    :fully_online_date, :initial_online_date, :name, :project_desp, :develop_start_date, :develop_finish_date, :status_id, 
+                    :service_num, :project_category_id, :sales_id, :project_manager_id)
+    end
   end
 end

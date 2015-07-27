@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe "LinkTests" do
+RSpec.describe "LinkTests", type: :request do
   describe "GET /info_service_projectx_link_tests" do
     mini_btn = 'btn btn-mini '
     ActionView::CompiledTemplates::BUTTONS_CLS =
@@ -19,7 +19,11 @@ describe "LinkTests" do
          'inverse'      => 'btn btn-inverse',
          'mini-inverse' => mini_btn + 'btn btn-inverse',
          'link'         => 'btn btn-link',
-         'mini-link'    => mini_btn +  'btn btn-link'
+         'mini-link'    => mini_btn +  'btn btn-link',
+         'right-span#'         => '2', 
+               'left-span#'         => '6', 
+               'offset#'         => '2',
+               'form-span#'         => '4'
         }
     before(:each) do
       @pagination_config = FactoryGirl.create(:engine_config, :engine_name => nil, :engine_version => nil, :argument_name => 'pagination', :argument_value => 30)
@@ -61,54 +65,62 @@ describe "LinkTests" do
     end
     it "works! (now write some real specs)" do
       qs = FactoryGirl.create(:info_service_projectx_project, :cancelled => false, :last_updated_by_id => @u.id, :customer_id => @cust.id)
-      visit projects_path()      
+      visit info_service_projectx.projects_path()      
       click_link 'Edit'
-      save_and_open_page
-      page.should have_content('Edit Project')
+      #save_and_open_page
+      expect(page).to have_content('Edit Project')
       fill_in 'project_name', with: 'a new name'
       click_button 'Save'
-      save_and_open_page
+      #save_and_open_page
       #bad data
-      visit projects_path()      
+      visit info_service_projectx.projects_path()      
       click_link 'Edit'
       fill_in 'project_name', with: ''
+      fill_in 'project_develop_start_date', with: Date.today
       click_button 'Save'
-      save_and_open_page
+      #save_and_open_page
+      #check
+      visit info_service_projectx.projects_path()  
+      #save_and_open_page    
+      expect(page).not_to have_content(Date.today.to_s)
       #
-      visit projects_path(:customer_id => @cust.id)
-      save_and_open_page
-      page.should have_content('Projects')
+      visit info_service_projectx.projects_path(:customer_id => @cust.id)
+      #save_and_open_page
+      expect(page).to have_content('Projects')
       click_link 'New Project'
       fill_in 'project_name', with: 'a name'
       select('proj status', from: 'project_status_id')
       click_button 'Save'
-      save_and_open_page
+      #save_and_open_page
       #bad data
-      visit projects_path(customer_id: @cust.id)
+      visit info_service_projectx.projects_path(customer_id: @cust.id)
       click_link 'New Project'
       fill_in 'project_name', with: 'a new name'
       click_button 'Save'
-      save_and_open_page
+      #check
+      visit info_service_projectx.projects_path
+      expect(page).to have_content('a new name')
+      #save_and_open_page
       #
-      visit projects_path
-      save_and_open_page
-      page.should have_content('Projects')
+      visit info_service_projectx.projects_path
+      #save_and_open_page
+      expect(page).to have_content('Projects')
       click_link 'New Project'
-      save_and_open_page
-      page.should have_content('New Project')
-      visit projects_path
+      #save_and_open_page
+      expect(page).to have_content('New Project')
+      visit info_service_projectx.projects_path
       click_link qs.id.to_s
-      page.should have_content('Project Info')
+      expect(page).to have_content('Project Info')
       click_link 'New Log'
-      page.should have_content('Log')
+      expect(page).to have_content('Log')
       #save_and_open_page
       
     end
     
     it "works for index_for_customer" do
-      visit index_for_customer_projects_path(:customer_id => @cust.id)
-      page.should have_content('Projects')
-      save_and_open_page
+      visit info_service_projectx.index_for_customer_projects_path(:customer_id => @cust.id)
+      expect(page).to have_content('Projects')
+      #save_and_open_page
     end
   end
 end

@@ -1,10 +1,10 @@
-require 'spec_helper'
+require 'rails_helper'
 
 module InfoServiceProjectx
-  describe ProjectsController do
-  
+  RSpec.describe ProjectsController, type: :controller do
+    routes {InfoServiceProjectx::Engine.routes}
     before(:each) do
-      controller.should_receive(:require_signin)
+      expect(controller).to receive(:require_signin)
       #controller.should_receive(:require_employee)
     end
     before(:each) do
@@ -31,8 +31,8 @@ module InfoServiceProjectx
         session[:user_id] = @u.id
         qs = FactoryGirl.create(:info_service_projectx_project, :cancelled => false, :last_updated_by_id => @u.id)
         qs1 = FactoryGirl.create(:info_service_projectx_project, :cancelled => false, :last_updated_by_id => @u.id,  :name => 'newnew')
-        get 'index' , {:use_route => :info_service_projectx}
-        assigns(:projects).should =~ [qs, qs1]       
+        get 'index' 
+        expect(assigns(:projects)).to match_array( [qs, qs1])       
       end
       
       it "should return project for the project_type" do
@@ -41,8 +41,8 @@ module InfoServiceProjectx
         session[:user_id] = @u.id
         qs = FactoryGirl.create(:info_service_projectx_project, :cancelled => false, :last_updated_by_id => @u.id)
         qs1 = FactoryGirl.create(:info_service_projectx_project, :cancelled => true, :last_updated_by_id => @u.id,  :name => 'newnew')
-        get 'index' , {:use_route => :info_service_projectx}
-        assigns(:projects).should eq([qs])
+        get 'index' 
+        expect(assigns(:projects)).to eq([qs])
       end
       
     end
@@ -53,8 +53,8 @@ module InfoServiceProjectx
         user_access = FactoryGirl.create(:user_access, :action => 'create', :resource => 'info_service_projectx_projects', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")        
         session[:user_id] = @u.id
-        get 'new' , {:use_route => :info_service_projectx}
-        response.should be_success
+        get 'new' 
+        expect(response).to be_success
       end
            
     end
@@ -65,8 +65,8 @@ module InfoServiceProjectx
         :sql_code => "")        
         session[:user_id] = @u.id
         qs = FactoryGirl.attributes_for(:info_service_projectx_project)
-        get 'create' , {:use_route => :info_service_projectx,  :project => qs}
-        response.should redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
+        get 'create' , {  :project => qs}
+        expect(response).to redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Saved!")
       end
       
       it "should render 'new' if data error" do
@@ -74,8 +74,8 @@ module InfoServiceProjectx
         :sql_code => "")        
         session[:user_id] = @u.id
         qs = FactoryGirl.attributes_for(:info_service_projectx_project, :name => nil)
-        get 'create' , {:use_route => :info_service_projectx,  :project => qs}
-        response.should render_template("new")
+        get 'create' , {  :project => qs}
+        expect(response).to render_template("new")
       end
     end
   
@@ -86,8 +86,8 @@ module InfoServiceProjectx
         :sql_code => "")        
         session[:user_id] = @u.id
         qs = FactoryGirl.create(:info_service_projectx_project, :customer_id => @cust.id)
-        get 'edit' , {:use_route => :info_service_projectx,  :id => qs.id}
-        response.should be_success
+        get 'edit' , {  :id => qs.id}
+        expect(response).to be_success
       end
       
     end
@@ -99,8 +99,8 @@ module InfoServiceProjectx
         :sql_code => "")        
         session[:user_id] = @u.id
         qs = FactoryGirl.create(:info_service_projectx_project)
-        get 'update' , {:use_route => :info_service_projectx,  :id => qs.id, :project => {:name => 'newnew'}}
-        response.should redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
+        get 'update' , {  :id => qs.id, :project => {:name => 'newnew'}}
+        expect(response).to redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Updated!")
       end
       
       it "should render 'new' if data error" do
@@ -108,8 +108,8 @@ module InfoServiceProjectx
         :sql_code => "")        
         session[:user_id] = @u.id
         qs = FactoryGirl.create(:info_service_projectx_project)
-        get 'update' , {:use_route => :info_service_projectx,  :id => qs.id, :project => {:name => nil}}
-        response.should render_template("edit")
+        get 'update' , {  :id => qs.id, :project => {:name => nil}}
+        expect(response).to render_template("edit")
       end
     end
   
@@ -120,8 +120,8 @@ module InfoServiceProjectx
         :sql_code => "")        
         session[:user_id] = @u.id
         qs = FactoryGirl.create(:info_service_projectx_project)
-        get 'show' , {:use_route => :info_service_projectx,  :id => qs.id}
-        response.should be_success
+        get 'show' , {  :id => qs.id}
+        expect(response).to be_success
       end
     end
     
@@ -133,8 +133,8 @@ module InfoServiceProjectx
         session[:session_customer_id] = @cust.id
         qs = FactoryGirl.create(:info_service_projectx_project, :cancelled => false, :last_updated_by_id => @u.id, :customer_id => @cust.id)
         qs1 = FactoryGirl.create(:info_service_projectx_project, :cancelled => false, :last_updated_by_id => @u.id,  :name => 'newnew', :customer_id => @cust.id + 1)
-        get 'index_for_customer' , {:use_route => :info_service_projectx, :customer_id => @cust.id }
-        assigns(:projects).should =~ [qs]    
+        get 'index_for_customer' , { :customer_id => @cust.id }
+        expect(assigns(:projects)).to match_array( [qs])    
       end
     end
   
