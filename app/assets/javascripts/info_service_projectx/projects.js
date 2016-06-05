@@ -11,6 +11,13 @@ $(function() {
     });
 });
 
+$(function (){
+	$('#project_customer_id').change(function(){
+      $('#project_field_changed').val('customer_id');
+      $.get(window.location, $('form').serialize(), null, "script");
+  	  return false;
+	});
+});
 
 $(function() {
 	$( "#project_develop_start_date" ).datepicker({dateFormat: 'yy-mm-dd'});

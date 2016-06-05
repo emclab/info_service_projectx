@@ -1,3 +1,3 @@
 module InfoServiceProjectx
-  VERSION = '01'
+  VERSION = '03'
 end
